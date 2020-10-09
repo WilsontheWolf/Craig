@@ -1,0 +1,16 @@
+{
+    "name": "craig",
+    "version": "0.0.1",
+    "description": "A simple to use bot to help with your server.",
+    "main": "index.js",
+    "repository": "https://github.com/WilsontheWolf/Craig",
+    "author": "WilsontheWolf",
+    "license": "MIT",
+    "dependencies": {
+        "@josh-providers/sqlite": "^1.0.15",
+        "discord.js": "^12.3.1",
+        "dotenv": "^8.2.0",
+        "josh": "^0.2.0",
+        "eslint": "^7.9.0"
+    }
+}
