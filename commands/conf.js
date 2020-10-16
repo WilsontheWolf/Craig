@@ -111,7 +111,7 @@ module.exports.run = async (client, message, args, level) => {
         let value = settings[setting];
         if (value === undefined) return message.reply(`no setting found called \`${setting}\`!`);
         let type = types[setting] || 'string';
-        let newValue = undefined;
+        let newValue;
         let input = args.join(' ');
         if(!input) return message.reply('please choose a value to set to.');
         if (type == 'string')

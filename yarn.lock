@@ -706,10 +706,9 @@ isexe@^2.0.0:
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=
 
-josh@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/josh/-/josh-0.2.0.tgz#6f4f5b7dde0fa8e3c08cce6ee87015c244464817"
-  integrity sha512-ja/z77B14j2ndjLlAfwcxT1reZ4Va581yQULxR8E/OQDG6ts6ZoqDPssQ+ArRu9ncQL5VFXBwQMcDU2TcFaQog==
+josh@eslachance/josh:
+  version "0.1.0"
+  resolved "https://codeload.github.com/eslachance/josh/tar.gz/604d73834bb8f60cc4b363ce49faab4cfadaf89d"
   dependencies:
     lodash "^4.17.20"
 
