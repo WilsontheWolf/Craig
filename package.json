@@ -8,7 +8,8 @@
     "license": "MIT",
     "dependencies": {
         "@josh-providers/sqlite": "^1.0.15",
-        "discord.js": "^12.3.1",
+        "better-ms": "Znudzony/better-ms",
+        "discord.js": "^12.4.0",
         "dotenv": "^8.2.0",
         "eslint": "^7.9.0",
         "josh": "eslachance/josh"

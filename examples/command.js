@@ -1,6 +1,6 @@
 module.exports = {
     name: 'name',
-    usage: '[args]',
+    usage: '<required> [optional]',
     guildOnly: false,
     enabled: true,
     level: 0,

@@ -11,25 +11,37 @@ module.exports = {
 };
 // eslint-disable-next-line no-unused-vars
 module.exports.run = async (client, message, args, level) => {
-    if (!args[0]) {
-        let cmds = client.commands.map(c => c.name);
-        for(let i = 0; i < cmds.length;i++) await client.unloadCommand(cmds[i]);
-        const cmdFiles = await require('fs').promises.readdir('./commands/');
-        console.log(`Loading a total of ${cmdFiles.length} commands.`);
-        cmdFiles.forEach(f => {
-            if (!f.endsWith('.js')) return;
-            const response = client.loadCommand(f);
-            if (response) console.log(response);
-        });
-        message.reply('Reloaded all commands.');
+    if (!message.options.includes('e')) {
+        if (!args[0]) {
+            let cmds = client.commands.map(c => c.name);
+            for (let i = 0; i < cmds.length; i++) await client.unloadCommand(cmds[i]);
+            await client.loadAllCommands();
+            message.reply('Reloaded all commands.');
+        } else {
+            let cmd = client.commands.get(args[0]) || client.commands.get(client.aliases.get(args[0]));
+            let response = await client.unloadCommand(cmd.name);
+            if (response) return message.reply(`Error Unloading: ${response}`);
+
+            response = client.loadCommand(cmd.name);
+            if (response) return message.reply(`Error Loading: ${response}`);
+
+            message.reply(`The command \`${cmd.name}\` has been reloaded`);
+        }
     } else {
-        let cmd = client.commands.get(args[0]) || client.commands.get(client.aliases.get(args[0]));
-        let response = await client.unloadCommand(cmd.name);
-        if (response) return message.reply(`Error Unloading: ${response}`);
+        if (!args[0]) {
+            let events = client.eventNames();
+            for (let i = 0; i < events.length; i++) await client.unloadEvent(events[i]);
+            await client.loadAllEvents();
+            message.reply('Reloaded all events.');
+        } else {
+            let event = args[0];
+            let response = await client.unloadEvent(event);
+            if (response) return message.reply(`Error Unloading: ${response}`);
 
-        response = client.loadCommand(cmd.name);
-        if (response) return message.reply(`Error Loading: ${response}`);
+            response = client.loadEvent(event);
+            if (response) return message.reply(`Error Loading: ${response}`);
 
-        message.reply(`The command \`${cmd.name}\` has been reloaded`);
+            message.reply(`The event \`${event}\` has been reloaded`);
+        }
     }
 };

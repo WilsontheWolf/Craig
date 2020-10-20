@@ -1,6 +1,5 @@
 // require all the things
 const Discord = require('discord.js');
-const fs = require('fs').promises;
 const Josh = require('josh');
 const provider = require('@josh-providers/sqlite');
 require('dotenv').config();
@@ -10,7 +9,8 @@ const client = new Discord.Client({ ws: { intents: Discord.Intents.NON_PRIVILEGE
 
 // config and stuff
 client.config = require('./config.js');
-require('./modules/functions.js')(client);
+require('./modules/loading.js')(client);
+require('./modules/data.js')(client);
 client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
 
@@ -44,24 +44,7 @@ client.internal = new Josh({
 });
 
 (async () => {
-    let commands = await fs.readdir('./commands');
-    console.log(`Loading ${commands.length} commands.`);
-    let done = 0;
-    commands.forEach(cmd => {
-        if (!cmd.endsWith('.js')) return;
-        let r = client.loadCommand(cmd);
-        if (!r) done++;
-    });
-    console.log(`Successfully loaded ${done}/${commands.length} command${commands.length !== 1 ? 's' : ''}.`);
-    let events = await fs.readdir('./events');
-    console.log(`Loading ${events.length} events.`);
-    done = 0;
-    events.forEach(evt => {
-        if (!evt.endsWith('.js')) return;
-
-        let r = client.loadEvent(evt);
-        if (!r) done++;
-    });
-    console.log(`Successfully loaded ${done}/${events.length} event${events.length !== 1 ? 's' : ''}.`);
+    client.loadAllCommands();
+    client.loadAllEvents();
     client.login(client.config.token);
 })();

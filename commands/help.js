@@ -1,6 +1,6 @@
 module.exports = {
     name: 'help',
-    usage: '(command name)',
+    usage: '[command name]',
     guildOnly: false,
     enabled: true,
     level: 0,

@@ -11,9 +11,9 @@ module.exports = {
     description: 'Manage the settings for your server.',
     moreHelp:
         `\`conf\` - shows all the current settings for the server.
-\`conf edit [key] [value]\` - change the value of a setting.
-\`conf reset [key]\` - reset the value of a setting to the default.
-\`conf view [key]\` - view the current value of a setting.`
+\`conf edit <key> <value>\` - change the value of a setting.
+\`conf reset <key>\` - reset the value of a setting to the default.
+\`conf view <key>\` - view the current value of a setting.`
 };
 // eslint-disable-next-line no-unused-vars
 module.exports.run = async (client, message, args, level) => {
