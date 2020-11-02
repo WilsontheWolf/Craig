@@ -38,18 +38,20 @@ module.exports.run = async (client, message, args, level) => {
     } catch (err) {
         e = true;
         response = err.toString();
-        const Linter = require('eslint').Linter;
-        let linter = new Linter();
-        let lint = linter.verify(code, { 'env': { 'commonjs': true, 'es2021': true, 'node': true }, 'extends': 'eslint:recommended', 'parserOptions': { 'ecmaVersion': 12 } });
-        let error = lint.find(e => e.fatal);
-        if (error) {
-            let line = code.split('\n')[error.line - 1];
-            let match = line.slice(error.column - 1).match(/\w+/i);
-            let length = match ? match[0].length : 1;
-            response = `${line}
+        try {
+            const Linter = require('eslint').Linter;
+            let linter = new Linter();
+            let lint = linter.verify(code, { 'env': { 'commonjs': true, 'es2021': true, 'node': true }, 'extends': 'eslint:recommended', 'parserOptions': { 'ecmaVersion': 12 } });
+            let error = lint.find(e => e.fatal);
+            if (error) {
+                let line = code.split('\n')[error.line - 1];
+                let match = line.slice(error.column - 1).match(/\w+/i);
+                let length = match ? match[0].length : 1;
+                response = `${line}
 ${' '.repeat(error.column - 1)}${'^'.repeat(length)}
 [${error.line}:${error.column}] ${error.message} `;
-        }
+            }
+        } catch (e) { }
 
     }
     if (silent) return;

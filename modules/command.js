@@ -1,16 +1,9 @@
+module.exports = {
+    name: 'command',
+    trigger: 'event:message'
+};
 // eslint-disable-next-line no-unused-vars
-module.exports = async (client, message) => {
-    if (message.author.bot) return;
-    const settings = message.settings = await client.getSettings(message);
-    const mention = new RegExp(`^<@!?${client.user.id}>( |)$`);
-    if (message.content.match(mention))
-        return message.reply(`my prefix${message.guild ? ' on this server' : ''} is \`${settings.prefix}\``);
-    const args = message.content.trim().split(/ +/g);
-
-    if (!message.content.startsWith(settings.prefix)) {
-        if (args[0].match(mention)) args.shift();
-        else return;
-    } else args[0] = args[0].slice(settings.prefix.length);
+module.exports.run = async (client, message, args) => {
     const command = args.shift().toLowerCase();
 
     if (message.guild && !message.member) await message.guild.members.fetch(message.author);
@@ -31,7 +24,6 @@ You are a ${client.config.perms.find(p => p.level === level).name} (${level})`);
     while (args[0] && args[0][0] === '-') {
         message.options.push(args.shift().slice(1));
     }
-
     try {
         console.log(`${message.author.tag} ran command ${command}.`);
         await cmd.run(client, message, args, level);
@@ -44,3 +36,5 @@ ${e}
 ${'```'}`);
     }
 };
+
+module.exports.check = (client, message) => !message.state.ignore && message.state.isCommand;

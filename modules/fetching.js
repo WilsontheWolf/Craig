@@ -1,4 +1,9 @@
-module.exports = (client) => {
+module.exports = {
+    name: 'fetching',
+    trigger: 'load'
+};
+
+module.exports.run = (client) => {
     client.fetchUser = async (query) => {
         const mention = new RegExp(/<@!?(\d+)>/);
         let match = query.match(mention);
@@ -19,9 +24,7 @@ module.exports = (client) => {
         if (result && msg.guild) {
             try {
                 result = await msg.guild.members.fetch(search);
-            } catch (e) {
-                //ignore errors
-            }
+            } catch (e) {}
         }
         if (result) return result;
         if (msg.guild) if (

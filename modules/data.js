@@ -1,4 +1,9 @@
-module.exports = (client) => {
+module.exports = {
+    name: 'data',
+    trigger: 'load'
+};
+
+module.exports.run = (client) => {
     client.getSettings = async (message) => {
         let settings = client.config.settings;
         if (!message.guild) return settings;
