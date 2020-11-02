@@ -705,9 +705,9 @@ isexe@^2.0.0:
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=
 
-josh@eslachance/josh:
+josh@WilsontheWolf/josh:
   version "0.1.0"
-  resolved "https://codeload.github.com/eslachance/josh/tar.gz/6d1f81859fc0adcec68bd4bf79fead623af10798"
+  resolved "https://codeload.github.com/WilsontheWolf/josh/tar.gz/446179ec53c88840f617164621b38fff3f32282c"
   dependencies:
     lodash "^4.17.20"
 

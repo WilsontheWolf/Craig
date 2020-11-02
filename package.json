@@ -10,7 +10,7 @@
         "@josh-providers/sqlite": "^1.0.15",
         "discord.js": "^12.4.0",
         "dotenv": "^8.2.0",
-        "josh": "eslachance/josh",
+        "josh": "WilsontheWolf/josh",
         "quick-ms": "^1.0.0"
     },
     "devDependencies": {
