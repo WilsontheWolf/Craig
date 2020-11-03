@@ -50,7 +50,7 @@ module.exports.run = (client) => {
             await command.shutdown(client);
         }
         try {
-            unRequire(`../commands/${command}.js`);
+            unRequire(`../commands/${command.name}.js`);
         } catch (e) {
             return 'Error un-requiring';
         }

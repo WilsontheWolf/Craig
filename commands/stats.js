@@ -6,7 +6,7 @@ module.exports = {
     level: 0,
     aliases: [],
     category: 'System',
-    description: '',
+    description: 'View bot stats.',
     moreHelp: null
 };
 const { getReadableTime: time } = require('quick-ms');

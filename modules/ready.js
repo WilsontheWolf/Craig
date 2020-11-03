@@ -10,4 +10,9 @@ module.exports.run = async (client) => {
     client.user.setActivity(`for @${client.user.username} help`, { type: 'WATCHING' });
     // ensure the internal db has the important stuff
     client.internal.ensure('support', []);
+
+    // loop the status cause it likes vanishing
+    setInterval(() => {
+        client.user.setActivity(`for @${client.user.username} help`, { type: 'WATCHING' });
+    }, 5 * 60 * 1000);
 };

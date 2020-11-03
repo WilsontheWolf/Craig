@@ -12,7 +12,9 @@ const config = {
         logChannel: null,
         modRole: null,
         adminRole: null,
-        support: false
+        support: false,
+        levelEnabled: false,
+        xpIgnore: []
     },
 
     perms: [
