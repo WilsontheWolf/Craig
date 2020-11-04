@@ -12,17 +12,18 @@ const types = {
     info: blueBright,
     debug: magentaBright
 };
+const pad = (input) => input.toString().padStart(2, '0');
 
 const makeTimestamp = () => {
     const date = new Date();
     const hour = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
     const am = date.getHours() > 12 ? 'pm' : 'am';
     const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDay() + 1;
-    const minute = date.getMinutes();
-    const second = date.getSeconds();
-    return `[${year}/${('0' + month).slice(-2)}/${('0' + day).slice(-2)} ${hour}:${('0' + minute).slice(-2)}:${('0' + second).slice(-2)}${am}]`;
+    const month = pad(date.getMonth() + 1);
+    const day = pad(date.getDay() + 1);
+    const minute = pad(date.getMinutes());
+    const second = pad(date.getSeconds());
+    return `[${year}/${month}/${day} ${hour}:${minute}:${second}${am}]`;
 };
 const log = async (args, type) => {
     const colour = types[type] || types.default;
