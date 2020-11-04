@@ -22,7 +22,7 @@ module.exports = (client) => {
             let name = cmd.split('.');
             name.pop();
             name = name.join('.');
-            console.log(`Loading module ${name}...`);
+            console.info(`Loading module ${name}...`);
             const c = require(`../modules/${cmd}`);
             client.modules.set(c.name, c);
         } catch (e) {
@@ -34,7 +34,7 @@ module.exports = (client) => {
 
     client.loadAllModules = async () => {
         let modules = (await fs.readdir('./modules')).filter(m => m.endsWith('.js'));
-        console.log(`Loading ${modules.length} modules.`);
+        console.info(`Loading ${modules.length} modules.`);
         let done = 0;
         modules.forEach(mod => {
             let r = client.loadModule(mod);
@@ -64,7 +64,7 @@ module.exports = (client) => {
             let name = cmd.split('.');
             name.pop();
             name = name.join('.');
-            console.log(`Loading override ${name}...`);
+            console.info(`Loading override ${name}...`);
             const c = require(`../overrides/${cmd}`);
             client.overrides.set(name, c);
         } catch (e) {
@@ -76,7 +76,7 @@ module.exports = (client) => {
 
     client.loadAllOverrides = async () => {
         let overrides = (await fs.readdir('./overrides')).filter(m => m.endsWith('.js'));
-        console.log(`Loading ${overrides.length} override${overrides.length !== 1 ? 's' : ''}.`);
+        console.info(`Loading ${overrides.length} override${overrides.length !== 1 ? 's' : ''}.`);
         let done = 0;
         overrides.forEach(mod => {
             let r = client.loadOverride(mod);

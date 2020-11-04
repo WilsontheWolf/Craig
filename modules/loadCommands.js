@@ -14,7 +14,7 @@ module.exports.run = (client) => {
             let name = cmd.split('.');
             name.pop();
             name = name.join('.');
-            console.log(`Loading command ${name}...`);
+            console.info(`Loading command ${name}...`);
             const c = require(`../commands/${cmd}`);
             client.commands.set(c.name, c);
             c.aliases.forEach(a => client.aliases.set(a, c.name));
@@ -27,7 +27,7 @@ module.exports.run = (client) => {
 
     client.loadAllCommands = async () => {
         let commands = await fs.readdir('./commands');
-        console.log(`Loading ${commands.length} commands.`);
+        console.info(`Loading ${commands.length} commands.`);
         let done = 0;
         commands.forEach(cmd => {
             if (!cmd.endsWith('.js')) return;

@@ -41,7 +41,6 @@ module.exports.run = (client) => {
                 .array();
             if (users.length == 1) return users[0].user;
             let question = '';
-            console.log(users.length);
             for (let i = 0; i != users.length && i != 10; i++) {
                 question =
                     question +
@@ -69,7 +68,6 @@ ${question}`
                 .array();
             if (users.length == 1) return users[0];
             let question = '';
-            console.log(users.length);
             for (let i = 0; i != users.length && i != 10; i++) {
                 question =
                     question +
@@ -116,7 +114,6 @@ ${question}`
                 .array();
             if (roles.length == 1) return roles[0];
             let question = '';
-            console.log(roles.length);
             for (let i = 0; i != roles.length && i != 10; i++) {
                 question =
                     question +
@@ -162,7 +159,6 @@ ${question}`
                 .array();
             if (roles.length == 1) return roles[0];
             let question = '';
-            console.log(roles.length);
             for (let i = 0; i != roles.length && i != 10; i++) {
                 question =
                     question +

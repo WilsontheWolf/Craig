@@ -9,7 +9,7 @@ const client = new Client({ ws: { intents: Intents.NON_PRIVILEGED } });
 // Load modules
 client.config = require('./config');
 require('./internal/loading')(client);
-
+require('./internal/logging')();
 // Start up the bot
 (async () => {
     await client.initialize();

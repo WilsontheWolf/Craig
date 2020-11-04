@@ -61,7 +61,7 @@ ${' '.repeat(error.column - 1)}${'^'.repeat(length)}
         .setColor(e ? 'RED' : 'GREEN')
         .setDescription(`\`\`\`${response.substr(0, 2042)}\`\`\``);
     if (length >= 2049) {
-        console.log(`An eval command executed by ${message.author.username}'s response was too long (${length}/2048) the response was:
+        console.debug(`An eval command executed by ${message.author.username}'s response was too long (${length}/2048) the response was:
 ${response}`);
         embed.addField('Note:', `The response was too long with a length of \`${length}/2048\` characters. it was logged to the console`);
     }

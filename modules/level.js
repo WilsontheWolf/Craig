@@ -22,7 +22,6 @@ module.exports.run = async (client, message) => {
     if (level < curLevel) {
         message.reply(`You've leveled up to level **${curLevel}**! 🎉`, { allowedMentions: { users: [] } });
     }
-    console.log(message.author.username, 'got', amount, 'xp and is now level', curLevel, 'from level', level, 'with', points, 'points');
     client.points.set(`${key}.level`, curLevel);
     client.points.set(`${key}.points`, points);
     cooldowns.add(key);

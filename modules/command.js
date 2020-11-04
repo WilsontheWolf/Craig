@@ -25,10 +25,9 @@ You are a ${client.config.perms.find(p => p.level === level).name} (${level})`);
         message.options.push(args.shift().slice(1));
     }
     try {
-        console.log(`${message.author.tag} ran command ${command}.`);
         await cmd.run(client, message, args, level);
     } catch (e) {
-        console.error('Error running command!');
+        console.error(`${message.author.tag} had an error running command ${command}!`);
         console.error(e);
         message.reply(`There was an unexpected error running that command.
 If you get support on this error please provide this info: ${'```'}
