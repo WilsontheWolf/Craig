@@ -22,8 +22,7 @@ const makeTimestamp = () => {
     const day = date.getDay() + 1;
     const minute = date.getMinutes();
     const second = date.getSeconds();
-
-    return `[${year}/${month}/${day} ${('0' + hour).slice(-2)}:${('0' + minute).slice(-2)}:${('0' + second).slice(-2)}${am}]`;
+    return `[${year}/${('0' + month).slice(-2)}/${('0' + day).slice(-2)} ${hour}:${('0' + minute).slice(-2)}:${('0' + second).slice(-2)}${am}]`;
 };
 const log = async (args, type) => {
     const colour = types[type] || types.default;
