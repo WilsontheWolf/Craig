@@ -1,16 +1,19 @@
+const chalk = require('chalk');
 const { red, green, magenta, magentaBright, blueBright } = require('chalk');
 const raw = {
     log: console.log,
     error: console.error,
     info: console.info,
-    debug: console.debug
+    debug: console.debug,
+    warn: console.warn
 };
 
 const types = {
     default: green,
     error: red,
     info: blueBright,
-    debug: magentaBright
+    debug: magentaBright,
+    warn: chalk.keyword('orange')
 };
 const pad = (input) => input.toString().padStart(2, '0');
 
@@ -45,6 +48,7 @@ module.exports = (debug = process.env.NODE_ENV === 'DEVELOPMENT') => {
     console.log = (...args) => log(args);
     console.error = (...args) => log(args, 'error');
     console.info = (...args) => log(args, 'info');
+    console.warn = (...args) => log(args, 'warn');
     console.debug = (...args) => {
         if (debug)
             log(args, 'debug');

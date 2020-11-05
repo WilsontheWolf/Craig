@@ -12,7 +12,7 @@ module.exports.run = async (client, message, args) => {
 
     if (!cmd) return;
 
-    if (!message.guild && cmd.conf.guildOnly)
+    if (!message.guild && cmd.guildOnly)
         return message.channel.send('This command is unavailable via private message. Please run this command in a guild.');
 
     const level = message.level = await client.getLevel(message);

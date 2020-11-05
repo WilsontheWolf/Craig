@@ -15,7 +15,7 @@ module.exports = {
 module.exports.run = async (client, message, args, level) => {
     let data = Object.values(await client.points.filter('guild', message.guild.id));
     data = data.sort((a, b) => b.points - a.points);
-    if (!data[0]) return message.reply('I\'m sorry it appears that there is no one on the leaderboard.');
+    if (!data[0]) return message.reply(`I'm sorry it appears that there is no one on the leaderboard. A moderator can enable the points by running \`${message.settings.prefix}conf edit leveling true\`.`);
     const top10 = data.splice(0, 10);
     const embed = new MessageEmbed()
         .setTitle(`${message.guild.name}'s leaderboard.`)
