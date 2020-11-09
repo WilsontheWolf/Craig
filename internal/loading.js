@@ -101,7 +101,7 @@ module.exports = (client) => {
     };
 
     client.on('*', (event, ...args) => {
-        client.run(`event:${event}`, args);
+        client.run(`event.${event}`, args);
     });
 
     client.run = async (trigger, payload) => {

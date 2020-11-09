@@ -1,6 +1,6 @@
 module.exports = {
     name: 'level',
-    trigger: 'event:message'
+    trigger: 'event.message'
 };
 const cooldowns = new Set();
 // eslint-disable-next-line no-unused-vars

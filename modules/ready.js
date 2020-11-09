@@ -1,6 +1,6 @@
 module.exports = {
     name: 'ready',
-    trigger: 'event:ready'
+    trigger: 'event.ready'
 };
 // eslint-disable-next-line no-unused-vars
 module.exports.run = async (client) => {

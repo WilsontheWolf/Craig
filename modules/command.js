@@ -1,6 +1,6 @@
 module.exports = {
     name: 'command',
-    trigger: 'event:message'
+    trigger: 'event.message'
 };
 // eslint-disable-next-line no-unused-vars
 module.exports.run = async (client, message, args) => {
