@@ -9,7 +9,7 @@ module.exports.run = async (client, message) => {
     if (cooldowns.has(key)) return;
     if (!message.settings.levelEnabled) return;
     if (message.settings.xpIgnore.includes(message.channel)) return;
-    let { level, points } = await client.points.ensure(key, {
+    let { level, points } = await client.db.points.ensure(key, {
         user: message.author.id,
         guild: message.guild.id,
         level: 0,
@@ -22,8 +22,8 @@ module.exports.run = async (client, message) => {
     if (level < curLevel) {
         message.reply(`You've leveled up to level **${curLevel}**! 🎉`, { allowedMentions: { users: [] } });
     }
-    client.points.set(`${key}.level`, curLevel);
-    client.points.set(`${key}.points`, points);
+    client.db.points.set(`${key}.level`, curLevel);
+    client.db.points.set(`${key}.points`, points);
     cooldowns.add(key);
     setTimeout(() => cooldowns.delete(key), 60 * 1000);
 };

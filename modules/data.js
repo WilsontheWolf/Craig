@@ -7,7 +7,7 @@ module.exports.run = (client) => {
     client.getSettings = async (message) => {
         let settings = client.config.settings;
         if (!message.guild) return settings;
-        let guildSettings = await client.settings.ensure(message.guild.id, {});
+        let guildSettings = await client.db.settings.ensure(message.guild.id, {});
         return { ...settings, ...guildSettings };
     };
     client.getLevel = async (message) => {

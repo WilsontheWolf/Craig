@@ -153,7 +153,7 @@ module.exports.run = async (client, message, args, level) => {
         if (!input) return message.reply('please choose a value to set to.');
         let newValue = await setValue(type, input, value);
         if (newValue === undefined) return message.reply(`invalid new value for ${name}!`);
-        await client.settings.set(`${message.guild.id}.${setting}`, newValue);
+        await client.db.settings.set(`${message.guild.id}.${setting}`, newValue);
         return message.channel.send(`Successfully set new value for ${name} to ${parseValue(newValue, true)}.`, { allowedMentions: { users: [] } });
     }
     if (subCommand == 'reset') {
@@ -163,7 +163,7 @@ module.exports.run = async (client, message, args, level) => {
         name = name ? name[1] : setting;
         let value = settings[setting];
         if (value === undefined) return message.reply(`no setting found called \`${setting}\`!`);
-        await client.settings.delete(`${message.guild.id}.${setting}`);
+        await client.db.settings.delete(`${message.guild.id}.${setting}`);
         return message.channel.send(`Successfully set new value for ${name} to the default.`);
     }
 };

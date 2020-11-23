@@ -1,3 +1,4 @@
+// todo make this much more modular
 const Josh = require('josh');
 const provider = require('@josh-providers/sqlite');
 
@@ -7,7 +8,7 @@ module.exports = {
 };
 
 module.exports.run = (client) => {
-    client.settings = new Josh({
+    client.db.settings = new Josh({
         name: 'settings',
         provider,
         serializer: (data, key, path) => {
@@ -33,11 +34,11 @@ module.exports.run = (client) => {
             };
         },
     });
-    client.internal = new Josh({
+    client.db.internal = new Josh({
         name: 'internal',
         provider,
     });
-    client.points = new Josh({
+    client.db.points = new Josh({
         name: 'points',
         provider,
     });

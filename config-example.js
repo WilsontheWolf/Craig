@@ -67,7 +67,7 @@ const config = {
             name: 'Bot Support',
             check: async (message) => {
                 try {
-                    if (message.settings.support && (await message.client.internal.get('support').includes(message.author.id))) return true;
+                    if (message.settings.support && (await message.client.db.internal.get('support').includes(message.author.id))) return true;
                     return false;
                 } catch (e) {
                     return false;

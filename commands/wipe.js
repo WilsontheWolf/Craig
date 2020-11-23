@@ -15,9 +15,9 @@ module.exports.run = async (client, message, args, level) => {
         + 'This will delete all settings for your server, including the leaderboard!!!!\n'
         + 'If you are sure about this send `confirm`. If not send `cancel`.');
     if (reply == 'confirm') {
-        await client.settings.delete(message.guild.id);
-        Object.keys(await client.points.filter(p => p.guild === message.guild.id))
-            .forEach(p => client.points.delete(p));
+        await client.db.settings.delete(message.guild.id);
+        Object.keys(await client.db.points.filter(p => p.guild === message.guild.id))
+            .forEach(p => client.db.points.delete(p));
         message.reply('Successfully deleted your servers settings!');
     } else message.reply('Canceled. Your setting have not been deleted.');
 };

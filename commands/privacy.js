@@ -19,7 +19,7 @@ module.exports.run = async (client, message, args, level) => {
 We use server id's to know where your server settings go.
 We use role and channel id's to store different settings, such as modRole, adminRole and logChannel.
 This data is not shared with any external companies. 
-For any concerns please join the support server at https://discord.gg/${await client.internal.get('supportInvite')}. 
+For any concerns please join the support server at https://discord.gg/${await client.db.internal.get('supportInvite')}. 
 Users can have the data removed by using the command \`${message.settings.prefix}wipe\` or asking in the support server.`)
             .setColor('BLURPLE')
             .setTimestamp()
