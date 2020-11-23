@@ -35,7 +35,7 @@ ${c.description}`).join('\n'),
         message.channel.send(embed);
     } else {
         let cmd = client.commands.get(args[0]) || client.commands.get(client.aliases.get(args[0]));
-        if (!cmd) return message.reply(`No command found called \`${args[0]}\`. To see all the commands run \`${message.settings.prefix}help\`.`);
+        if (!cmd) return message.reply(`No command found called \`${args[0]}\`. To see all the commands run \`${message.settings.prefix}help\`.`, { allowedMentions: { users: [message.author.id] } });
         const embed = new Discord.MessageEmbed()
             .setTitle(`${cmd.name}:`)
             .setDescription(`**${message.settings.prefix}${cmd.name} ${cmd.usage}**
