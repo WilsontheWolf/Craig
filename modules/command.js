@@ -10,7 +10,12 @@ module.exports.run = async (client, message, args) => {
 
     const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
 
-    if (!cmd) return;
+    if (!cmd) {
+        if (!message.guild) return;
+        const tag = await client.db.tags.get(`${message.guild.id}-${command}`);
+        if (tag) message.channel.send(tag.content, { allowedMentions: { users: [] } });
+        return;
+    }
 
     if (!message.guild && cmd.guildOnly)
         return message.channel.send('This command is unavailable via private message. Please run this command in a guild.');

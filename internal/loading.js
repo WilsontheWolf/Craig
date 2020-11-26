@@ -20,7 +20,7 @@ module.exports = (client) => {
         if (!client.modules) client.modules = new Collection();
         try {
             let name = cmd.split('.');
-            name.pop();
+            if (name.length !== 1) name.pop();
             name = name.join('.');
             console.info(`Loading module ${name}...`);
             const c = require(`../modules/${cmd}`);
@@ -62,7 +62,7 @@ module.exports = (client) => {
         if (!client.overrides) client.overrides = new Collection();
         try {
             let name = cmd.split('.');
-            name.pop();
+            if (name.length !== 1) name.pop();
             name = name.join('.');
             console.info(`Loading override ${name}...`);
             const c = require(`../overrides/${cmd}`);
@@ -105,12 +105,12 @@ module.exports = (client) => {
     });
 
     client.run = async (trigger, payload) => {
-        if(!Array.isArray(payload)) payload = [payload];
+        if (!Array.isArray(payload)) payload = [payload];
         const override = client.overrides.get(trigger);
         if (override && typeof override === 'function') payload = await override(client, ...payload);
         client.modules.filter(m => m && m.trigger === trigger).forEach(async e => {
-            if (typeof e.check === 'function') 
-                if(!(await e.check(client, ...payload))) return;            
+            if (typeof e.check === 'function')
+                if (!(await e.check(client, ...payload))) return;
             if (typeof e.run === 'function') e.run(client, ...payload);
         });
     };

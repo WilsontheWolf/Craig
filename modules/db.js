@@ -8,6 +8,7 @@ module.exports = {
 };
 
 module.exports.run = (client) => {
+    client.db = {};
     client.db.settings = new Josh({
         name: 'settings',
         provider,
@@ -40,6 +41,10 @@ module.exports.run = (client) => {
     });
     client.db.points = new Josh({
         name: 'points',
+        provider,
+    });
+    client.db.tags = new Josh({
+        name: 'tags',
         provider,
     });
 };

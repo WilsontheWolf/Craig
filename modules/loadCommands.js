@@ -12,7 +12,7 @@ module.exports.run = (client) => {
     client.loadCommand = (cmd) => {
         try {
             let name = cmd.split('.');
-            name.pop();
+            if(name.length !== 1) name.pop();
             name = name.join('.');
             console.info(`Loading command ${name}...`);
             const c = require(`../commands/${cmd}`);
