@@ -27,8 +27,10 @@ module.exports.run = async (client, message, args, level) => {
     const subCommands = [
         {
             names: ['set', 'edit', 'create', 'add'],
+            level: 1, 
             run: async (args) => {
                 let [tag, ...content] = args;
+                if (!tag) return message.reply('Please include a tag to set.');
                 if (tag.includes('.')) return message.reply('Due to an issue with the database you can\'t have `.`\'s in the tag name. Sorry for that');
                 content = content.join(' ');
                 if (!content) return message.reply('Please include the content of the tag.');
@@ -42,6 +44,7 @@ module.exports.run = async (client, message, args, level) => {
         },
         {
             names: ['delete', 'remove'],
+            level: 1,
             run: async (args) => {
                 let tag = args.join(' ');
                 if (!tag) message.reply('Please specify a tag to delete.');
@@ -53,6 +56,7 @@ module.exports.run = async (client, message, args, level) => {
         {
             default: false,
             names: ['raw', 'copy'],
+            level: 0,
             run: async (args) => {
                 let tag;
                 if (args[0]) tag = args.join(' ');
@@ -66,6 +70,7 @@ module.exports.run = async (client, message, args, level) => {
         {
             default: true,
             names: ['list', 'view'],
+            level: 0,
             run: async (args) => {
                 let tag;
                 if (args[0]) tag = args.join(' ');
@@ -92,5 +97,6 @@ module.exports.run = async (client, message, args, level) => {
         args.unshift(subCommand);
     }
     if (!command || !command.run || typeof command.run !== 'function') return message.reply('I\'m sorry something went wrong.');
+    if(command.level < level) return message.reply('You don\'t have the perms to run this subcommand!');
     await command.run(args);
 };
