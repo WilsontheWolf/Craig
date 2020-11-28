@@ -97,6 +97,6 @@ module.exports.run = async (client, message, args, level) => {
         args.unshift(subCommand);
     }
     if (!command || !command.run || typeof command.run !== 'function') return message.reply('I\'m sorry something went wrong.');
-    if(command.level < level) return message.reply('You don\'t have the perms to run this subcommand!');
+    if(command.level > level) return message.reply('You don\'t have the perms to run this subcommand!');
     await command.run(args);
 };
