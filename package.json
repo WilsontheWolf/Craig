@@ -9,7 +9,7 @@
     "dependencies": {
         "@josh-providers/sqlite": "^1.0.15",
         "chalk": "^4.1.0",
-        "discord.js": "^12.4.0",
+        "discord.js": "^12.5.1",
         "dotenv": "^8.2.0",
         "josh": "WilsontheWolf/josh",
         "quick-ms": "^1.0.0"
