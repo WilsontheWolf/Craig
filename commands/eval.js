@@ -55,6 +55,7 @@ ${' '.repeat(error.column - 1)}${'^'.repeat(length)}
 
     }
     if (silent) return;
+    response = response.replace(client.token, 'no');
     const length = `\`\`\`${response}\`\`\``.length;
     embed
         .setTitle(e ? '**Error**' : '**Success**')
