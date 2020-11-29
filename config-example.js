@@ -30,7 +30,7 @@ const config = {
             name: 'Moderator',
             check: (message) => {
                 try {
-                    if (message.member.roles.cache.has(message.settings.modRole)) return true;
+                    if (message.member.roles.cache.has(message.settings.modRole.id)) return true;
                     return false;
                 } catch (e) {
                     return false;
@@ -43,7 +43,7 @@ const config = {
             check: (message) => {
                 try {
                     if (message.member.permissions.has('MANAGE_GUILD')) return true;
-                    if (message.member.roles.cache.has(message.settings.adminRole)) return true;
+                    if (message.member.roles.cache.has(message.settings.adminRole.id)) return true;
                     return false;
                 } catch (e) {
                     return false;
