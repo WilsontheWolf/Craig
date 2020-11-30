@@ -12,7 +12,7 @@
         "discord.js": "^12.5.1",
         "dotenv": "^8.2.0",
         "josh": "WilsontheWolf/josh",
-        "quick-ms": "^1.0.0"
+        "quick-ms": "^1.1.0"
     },
     "devDependencies": {
         "eslint": "^7.12.1"
