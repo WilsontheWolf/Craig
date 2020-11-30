@@ -950,10 +950,10 @@ punycode@^2.1.0:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
-quick-ms@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/quick-ms/-/quick-ms-1.1.0.tgz#c2b57ab373507a7bde3ad57ae80dff9db6b248ea"
-  integrity sha512-eKNh0VgBlHUFKVNsI/cPEIKFJGsgLwROkuANTteHoCKbftMJs++yAxHyXy6QskRcEmC/64/1WMoZu7y7kOysyQ==
+quick-ms@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/quick-ms/-/quick-ms-1.1.1.tgz#15626bbaa55320539a94f3b6c95228eea1fecad5"
+  integrity sha512-bsymAb8jaGZo8E+Dxtr+EOo9Awt1dk3Q4y+pBm2cEsqFl7/fi/SOP+BHQ9L1dp8WKsSDjcMP+LjZLm/tzGS86w==
 
 randombytes@^2.1.0:
   version "2.1.0"
