@@ -1,5 +1,4 @@
 // WARNING: This is in early testing. This does not represent the final state of this code
-
 module.exports = {
     name: 'slashCommand',
     trigger: 'event.raw'
@@ -9,33 +8,58 @@ const Discord = require('discord.js');
 // eslint-disable-next-line no-unused-vars
 module.exports.run = async (client, packet) => {
     if (!packet || packet.t !== 'INTERACTION_CREATE') return;
-    console.debug('Received slash command stuff', packet.d);
     if (!client.slash) client.slash = [];
     client.slash.push(packet);
-    let data = packet.d.data;
-    if (!data) return console.error('WTF slash command with no data!');
+    let { data, member: memberRaw, guild_id: guildID } = packet.d;
+    if (!data || !memberRaw || !memberRaw.user) return console.debug('Slash command missing stuff!');
+    let guild = client.guilds.cache.get(guildID);
+    let member;
+    if (guild) member = new Discord.GuildMember(client, memberRaw, guild);
+    let user = new Discord.User(client, memberRaw.user);
     const url = `https://discord.com/api/v8/interactions/${packet.d.id}/${packet.d.token}/callback`;
-    if (data.name === 'say')
-        console.log(await (await fetch(url, {
+    const reply = async (content, hidden = true, type = 3) => {
+        let res;
+        if (typeof content === 'string') res = {
+            content,
+            flags: hidden ? 64 : 0
+        };
+        else if (content instanceof Discord.MessageEmbed) res = {
+            embeds: [content],
+            flags: 0 // As of right now hidden messages don't support embeds
+        };
+        else throw new Error('Invalid data type!');
+        let request = await fetch(url, {
             method: 'POST',
             body: JSON.stringify({
-                type: 4,
-                data: {
-                    content: data.options.find(v => v.name === 'content').value
-                }
+                type,
+                data: res
             }),
             headers: { 'Content-Type': 'application/json' }
-        })).text());
-    if (data.name === 'whisper')
-        console.log(await (await fetch(url, {
-            method: 'POST',
-            body: JSON.stringify({
-                type: 3,
-                data: {
-                    content: data.options.find(v => v.name === 'content').value,
-                    flags: 64
-                }
-            }),
-            headers: { 'Content-Type': 'application/json' }
-        })).text());
+        });
+        if (!request.ok) {
+            console.error('Failed to send', request.url, request.status, await request.text());
+            return '';
+        }
+        return await request.text();
+
+
+    };
+    const { name, options: rawArgs } = data;
+    let command = client.commands.get(name);
+    if (!command) return reply(`I'm sorry that command doesn't seem to exist :V. Please report this error to https://discord.gg/${await client.db.internal.get('supportInvite')}`);
+    if (!command.slash || !command.slash.supported || !command.slash.run || typeof command.slash.run !== 'function') return reply(`I'm sorry that command doesn't seem to be supported :V. Please report this error to https://discord.gg/${await client.db.internal.get('supportInvite')}`);
+    let args = new Map();
+    if (rawArgs) rawArgs.forEach(({ value, name }) => {
+        args.set(name, value);
+    });
+    let resData = { author: user, member, guild };
+    resData.level = client.getLevel(resData);
+    try {
+        await command.slash.run(client, args, resData, reply);
+    } catch (e) {
+        reply(`There was an unexpected error running that command.
+If you get support on this error please provide this info: ${'```'}
+${e}
+${'```'}`);
+    }
 };

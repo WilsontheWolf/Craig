@@ -1,26 +1,22 @@
 module.exports = {
-    name: 'name',
-    usage: '<required> [optional]',
+    name: 'say',
+    usage: '<content>',
     guildOnly: false,
     enabled: true,
     level: 0,
     aliases: [],
     category: 'Misc',
-    description: '',
+    description: 'Say what you want to say!',
     moreHelp: null
-};
-const main = async () => {
-    // do stuff here
 };
 
 module.exports.slash = {
     supported: true,
-    // eslint-disable-next-line no-unused-vars
     run: async (client, args, data, reply) => {
-        main();
+        reply(args.get('content'), false, 4);
     }
 };
 // eslint-disable-next-line no-unused-vars
 module.exports.run = async (client, message, args, level) => {
-    main();
+    message.channel.send(args.join(' '), { allowedMentions: { users: [message.author.id] } });
 };

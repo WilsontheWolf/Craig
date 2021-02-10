@@ -10,19 +10,19 @@ module.exports = {
     moreHelp: null
 };
 const Discord = require('discord.js');
+
 // eslint-disable-next-line no-unused-vars
-module.exports.run = async (client, message, args, level) => {
+const main = async (code, client, message, args, level) => {
     let silent = false;
-    if (message.options.includes('s')) {
-        silent = true;
-    }
-    if (message.options.includes('d')) {
-        message.delete().catch(() => { });
-    }
+    // if (message.options.includes('s')) {
+    //     silent = true;
+    // }
+    // if (options.includes('d')) {
+    //     message.delete().catch(() => { });
+    // }
     const embed = new Discord.MessageEmbed()
         .setFooter(`Eval command executed by ${message.author.username}`)
         .setTimestamp();
-    let code = args.join(' ');
     let msg;
     let response;
     let e = false;
@@ -66,7 +66,17 @@ ${' '.repeat(error.column - 1)}${'^'.repeat(length)}
 ${response}`);
         embed.addField('Note:', `The response was too long with a length of \`${length}/2048\` characters. it was logged to the console`);
     }
+    return embed;
+};
+// eslint-disable-next-line no-unused-vars
+module.exports.run = async (client, message, args, level) => {
+    message.channel.send(await main(args.join(' '), client, message, args, level));
+};
+
+module.exports.slash = {
+    supported: true,
     // eslint-disable-next-line no-unused-vars
-    msg = await message.channel.send(embed);
-    // msg.react('💥')
+    run: async (client, args, data, reply) => {
+        reply(await main(args.get('code'), client, data, args));
+    }
 };
