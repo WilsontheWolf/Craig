@@ -18,7 +18,7 @@ module.exports.run = async (client, message, args, level) => {
             .setTitle(`${client.user.username} help.`)
             .setDescription(`My prefix here is \`${message.settings.prefix}\`. For more help on a command run \`${message.settings.prefix}help [command]\`.`)
             .setColor('RANDOM');
-        const cmds = message.guild ? client.commands.filter(cmd => cmd.level <= level) : client.commands.filter(cmd => client.level <= level && cmd.conf.guildOnly !== true);
+        const cmds = message.guild ? client.commands.filter(cmd => cmd.level <= level) : client.commands.filter(cmd => cmd.level <= level && cmd.guildOnly !== true);
         let values = {};
         cmds.forEach(cmd => {
             if (!values[cmd.category]) values[cmd.category] = [];
