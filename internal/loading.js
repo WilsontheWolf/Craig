@@ -24,7 +24,11 @@ module.exports = (client) => {
             name = name.join('.');
             console.info(`Loading module ${name}...`);
             const c = require(`../modules/${cmd}`);
-            client.modules.set(c.name, c);
+            c.type = c.type ?? 'run';
+            if (c.type === 'get' && client.modules.find(({ trigger, type }) => type === 'get' && trigger === c.trigger))
+                console.error(`Loading module ${name} failed! A get module with this trigger already exists!`);
+            else
+                client.modules.set(c.name, c);
         } catch (e) {
             console.error(`Error loading module ${cmd}:`);
             console.error(e);
@@ -101,18 +105,21 @@ module.exports = (client) => {
     };
 
     client.on('*', (event, ...args) => {
-        client.run(`event.${event}`, args);
+        client.run(`event.${event}`, ...args);
     });
 
-    client.run = async (trigger, payload) => {
-        if (!Array.isArray(payload)) payload = [payload];
+    client.run = async (trigger, ...payload) => {
         const override = client.overrides.get(trigger);
         if (override && typeof override === 'function') payload = await override(client, ...payload);
-        client.modules.filter(m => m && m.trigger === trigger).forEach(async e => {
+        client.modules.filter(m => m && m.trigger === trigger && m.type === 'run').forEach(async e => {
             if (typeof e.check === 'function')
                 if (!(await e.check(client, ...payload))) return;
             if (typeof e.run === 'function') e.run(client, ...payload);
         });
+    };
+    client.get = async (trigger, ...payload) => {
+        const module = client.modules.find(m => m && m.trigger === trigger && m.type === 'get');
+        if (typeof module?.run === 'function') return module.run(client, ...payload);
     };
     client.initialize = async () => {
         client.modules = new Collection();
