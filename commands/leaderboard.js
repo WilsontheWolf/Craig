@@ -8,7 +8,7 @@ module.exports = {
     level: 0,
     aliases: ['lb'],
     category: 'Leveling',
-    description: '',
+    description: 'See who has the most xp in your sever.',
     moreHelp: null
 };
 // eslint-disable-next-line no-unused-vars

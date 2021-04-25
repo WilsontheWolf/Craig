@@ -1,21 +1,22 @@
 module.exports = {
     name: 'webServer',
-    trigger: 'load'
+    type: 'load'
 };
 const Koa = require('koa');
-let app;
+const cors = require('@koa/cors');
+let app, server;
 
 module.exports.run = (client) => {
     if (!app) {
         app = new Koa();
-
+        app.use(cors());
         app.use(async (ctx) => {
             let { path, url } = ctx;
             let resp;
             // The client isn't ready
             if (!client.readyTimestamp) {
                 ctx.status = 503;
-                return ctx.body = { message: 'Client not ready' };
+                return ctx.body = { message: 'Client not ready. Please retry shortly.' };
             }
             try {
                 let get = path.replace(/^\/+|(\/)\/+|\/+$/g, '$1');
@@ -33,7 +34,12 @@ module.exports.run = (client) => {
             }
             ctx.body = resp;
         });
-
-        app.listen(3000);
+        server = app.listen(process.env.PORT || 3000);
+        console.log(`Running webserver on port ${process.env.PORT || 3000}`);
     }
+};
+
+module.exports.close = () => {
+    if (typeof server?.close === 'function') server.close();
+    console.log('Webserver closed.');
 };

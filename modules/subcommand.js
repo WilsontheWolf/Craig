@@ -1,6 +1,6 @@
 module.exports = {
     name: 'subcommand',
-    trigger: 'load'
+    type: 'load'
 };
 
 module.exports.run = (client) => {
@@ -15,4 +15,8 @@ module.exports.run = (client) => {
         if (command.level > level) return 'You don\'t have the perms to run this subcommand!';
         command.run(args);
     };
+};
+
+module.exports.close = (client) => {
+    delete client.subCommand;
 };

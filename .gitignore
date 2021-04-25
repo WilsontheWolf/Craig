@@ -104,7 +104,9 @@ dist
 .tern-port
 
 # Config
-config.js
+config/*
+!config/index.js
+!config/*-example.js
 
 # Data
 data/
