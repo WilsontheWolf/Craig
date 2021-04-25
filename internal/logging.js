@@ -1,5 +1,4 @@
-const chalk = require('chalk');
-const { red, green, magenta, magentaBright, blueBright } = require('chalk');
+const { red, green, magenta, magentaBright, blueBright, yellow } = require('colorette');
 const raw = {
     log: console.log,
     error: console.error,
@@ -13,7 +12,7 @@ const types = {
     error: red,
     info: blueBright,
     debug: magentaBright,
-    warn: chalk.keyword('orange')
+    warn: yellow
 };
 const pad = (input) => input.toString().padStart(2, '0');
 

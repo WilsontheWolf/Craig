@@ -4,7 +4,7 @@ const provider = require('@josh-providers/sqlite');
 
 module.exports = {
     name: 'db',
-    trigger: 'load'
+    type: 'load'
 };
 
 module.exports.run = (client) => {
@@ -46,5 +46,13 @@ module.exports.run = (client) => {
     client.db.tags = new Josh({
         name: 'tags',
         provider,
+    }); 
+    client.db.logins = new Josh({
+        name: 'logins',
+        provider,
     });
+};
+
+module.exports.close = (client) => {
+    delete client.db;
 };

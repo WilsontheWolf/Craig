@@ -4,7 +4,7 @@ const fs = require('fs').promises;
 
 module.exports = {
     name: 'loadCommands',
-    trigger: 'load'
+    type: 'load'
 };
 
 // eslint-disable-next-line no-unused-vars
@@ -12,10 +12,11 @@ module.exports.run = (client) => {
     client.loadCommand = (cmd) => {
         try {
             let name = cmd.split('.');
-            if(name.length !== 1) name.pop();
+            if (name.length !== 1) name.pop();
             name = name.join('.');
             console.info(`Loading command ${name}...`);
             const c = require(`../commands/${cmd}`);
+            c.__fileName = `../modules/${cmd}`;
             client.commands.set(c.name, c);
             c.aliases.forEach(a => client.aliases.set(a, c.name));
         } catch (e) {
@@ -42,16 +43,22 @@ module.exports.run = (client) => {
         if (client.commands.has(commandName)) {
             command = client.commands.get(commandName);
         } else if (client.aliases.has(commandName)) {
-            command = client.commands.get(client.aliases.get(commandName));
+            commandName = client.aliases.get(commandName);
+            command = client.commands.get(commandName);
         }
         if (!command)
             return `The command \`${commandName}\` doesn't seem to exist, nor is it an alias. Try again!`;
-        if (command.shutdown) {
-            await command.shutdown(client);
-        }
+        console.info(`Unloading command ${commandName}...`);
+        if (command.close) 
+            await command.close(client);
         try {
-            unRequire(`../commands/${command.name}.js`);
+            unRequire(command.__fileName || `../commands/${command.name}.js`);
+            command.aliases?.forEach(a => {
+                a.delete(a);
+            });
+            client.commands.delete(commandName);
         } catch (e) {
+            console.error(`Error un-requiring ${commandName}\n`, e);
             return 'Error un-requiring';
         }
         return false;
@@ -61,4 +68,17 @@ module.exports.run = (client) => {
     client.aliases = new Discord.Collection();
     client.loadAllCommands();
 
+};
+
+module.exports.close = async (client) => {
+    console.info('Unloading all commands...');
+    await Promise.all(client.commands.map(command =>
+        client.unloadCommand(command.name)
+    ));
+    console.log('Unloaded all commands!');
+    delete client.loadCommand;
+    delete client.loadAllCommands;
+    delete client.unloadCommand;
+    delete client.commands;
+    delete client.aliases;
 };

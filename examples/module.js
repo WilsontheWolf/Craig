@@ -1,6 +1,7 @@
 module.exports = {
     name: 'module',
-    trigger: 'load'
+    trigger: 'load',
+    type: 'run'
 };
 
 // eslint-disable-next-line no-unused-vars
