@@ -8,7 +8,7 @@ let app, server;
 
 module.exports.run = (client) => {
     if (!app) {
-        app = new Koa();
+        app = new Koa({origin: '*'});
         app.use(cors());
         app.use(async (ctx) => {
             let { path, url } = ctx;
