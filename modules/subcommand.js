@@ -13,7 +13,7 @@ module.exports.run = (client) => {
         }
         if (!command || !command.run || typeof command.run !== 'function') throw new Error('Unable to run command!');
         if (command.level > level) return 'You don\'t have the perms to run this subcommand!';
-        command.run(args);
+        return command.run(args);
     };
 };
 

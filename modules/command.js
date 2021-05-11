@@ -37,7 +37,11 @@ You are a ${client.config.perms.find(p => p.level === level).name} (${level})`);
         message.reply(`There was an unexpected error running that command.
 If you get support on this error please provide this info: ${'```'}
 ${e}
-${'```'}`);
+${'```'}`)
+            .catch(e => {
+                console.error('Error sending error message.');
+                console.error(e);
+            });
     }
 };
 

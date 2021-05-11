@@ -44,6 +44,6 @@ ${cmd.description} ${cmd.moreHelp ? '\n' + cmd.moreHelp : ''}`)
             .addField('Aliases:', cmd.aliases[0] ? `\`${cmd.aliases.join('` `')}\`` : 'none', true)
             .addField('Guild Only:', cmd.guildOnly, true)
             .setColor('PURPLE');
-        message.channel.send(embed);
+        await message.channel.send(embed);
     }
 };

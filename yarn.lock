@@ -52,10 +52,17 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@josh-providers/sqlite@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@josh-providers/sqlite/-/sqlite-1.1.1.tgz#f12c588de82b3f7fa6e71427d88ce9f7f4578b54"
-  integrity sha512-CB/9Nx5PAi6hU7f4gDZL0tx4CQB8+A7JoHUY+KLDqhmEFvO/oVbl2Q1kl9PtxiHQiAvCHggza+LSB4D/6R9ehA==
+"@joshdb/core@^1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@joshdb/core/-/core-1.2.3.tgz#a5cd3610f413fb38ad0d626d20341d222e2a71e2"
+  integrity sha512-kbRBGz68t5Hc03nPNrEc/IHCY0jMXSMkVNKFTqMMkHaf34csWdMMmZZcvBDxGmaH20RhkK2XijqGIzMonjCGwg==
+  dependencies:
+    lodash "^4.17.20"
+
+"@joshdb/sqlite@^1.1.8":
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/@joshdb/sqlite/-/sqlite-1.1.8.tgz#54a3238018ba173ed07f14aede8a170aa771932d"
+  integrity sha512-BnpXG7w7vsmYo+I/bTNEDHM0n+gkj2MOcRgONBnhqXq63qvS3cWY0q5tsbPb248nIleEYuiTkFdybcyD1QGPsg==
   dependencies:
     better-sqlite3 "^7.1.0"
     lodash "^4.17.15"
@@ -919,12 +926,6 @@ isexe@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=
-
-josh@WilsontheWolf/josh:
-  version "1.1.3"
-  resolved "https://codeload.github.com/WilsontheWolf/josh/tar.gz/4d8b349af171f0b0601389d942ec22b75e5e4f37"
-  dependencies:
-    lodash "^4.17.20"
 
 js-tokens@^4.0.0:
   version "4.0.0"

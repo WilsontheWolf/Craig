@@ -17,5 +17,5 @@ module.exports.run = async (client, message, args, level) => {
     if(user.bot) return message.reply('Bots can\'t get xp.');
     let data = await client.db.points.get(`${user.id}-${message.guild.id}`);
     if(!data) return message.reply('This user is not registered yet.');
-    else message.channel.send(`${user.id === message.author.id ? 'You are' : `${user.username} is`} level ${data.level} with ${data.points}xp.`);
+    else await message.channel.send(`${user.id === message.author.id ? 'You are' : `${user.username} is`} level ${data.level} with ${data.points}xp.`);
 };

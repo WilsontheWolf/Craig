@@ -24,5 +24,5 @@ module.exports.run = async (client, message, args, level) => {
         .addField('👥Users', `~${client.guilds.cache.map(g => g.memberCount).reduce((a, b) => a + b)} users, in ${client.channels.cache.size} channels of ${client.guilds.cache.size} servers.`, true)
         .setFooter(`Requested by ${message.author.tag}`)
         .setTimestamp();
-    message.channel.send(embed);
+    await message.channel.send(embed);
 };
