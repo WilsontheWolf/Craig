@@ -21,5 +21,5 @@ module.exports.run = async (client, message, args, level) => {
         .setTitle(`${message.guild.name}'s leaderboard.`)
         .setColor('PURPLE');    
     embed.setDescription(top10.map((u, i) => `**#${i + 1}** <@${u.user}>:\nLevel ${u.level}, ${u.points}xp.`).join('\n'));
-    message.channel.send(embed);
+    await message.channel.send(embed);
 };

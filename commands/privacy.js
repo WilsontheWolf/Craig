@@ -12,7 +12,7 @@ module.exports = {
 const Discord = require('discord.js');
 // eslint-disable-next-line no-unused-vars
 module.exports.run = async (client, message, args, level) => {
-    message.channel.send(
+    await message.channel.send(
         new Discord.MessageEmbed()
             .setTitle('Privacy Policy')
             .setDescription(`${client.user.tag} collects server, channel, and role id's. Id's are publicly available and unique to that item.

@@ -33,5 +33,5 @@ module.exports.run = async (client, message, args, level) => {
     let m = `Successfully saved ${suc.length == 1 ? suc[0] : `all ${suc.length} db's`}`;
     if(err.length && !suc.length) m = `${err.length == 1 ? `All ${err.length}` : 'Your'} db${err.length == 1 ? 's' : ''} failed to save.`;
     if(err.length && suc.length) m = `${err.length} db${err.length == 1 ? 's' : ''} failed to save. They were ${'```'}\n${err.join('\n')}${'```'}`;
-    message.reply(m);
+    await message.reply(m);
 };

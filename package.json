@@ -7,12 +7,12 @@
     "author": "WilsontheWolf",
     "license": "MIT",
     "dependencies": {
-        "@josh-providers/sqlite": "^1.1.1",
+        "@joshdb/core": "^1.2.3",
+        "@joshdb/sqlite": "^1.1.8",
         "@koa/cors": "^3.1.0",
         "colorette": "^1.2.2",
         "discord.js": "^12.5.3",
         "dotenv": "^8.2.0",
-        "josh": "WilsontheWolf/josh",
         "koa": "^2.13.1",
         "quick-ms": "^1.2.5"
     },
