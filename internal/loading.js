@@ -29,15 +29,19 @@ module.exports = (client) => {
             if (name.length !== 1) name.pop();
             name = name.join('.');
             console.info(`Loading module ${name}...`);
-            const m = require(`../modules/${cmd}`);
-            m.type = m.type ?? 'run';
-            m.__fileName = `../modules/${cmd}`;
-            if (m.type === 'get' && client.modules.find(({ trigger, type }) => type === 'get' && trigger === m.trigger))
-                console.error(`Loading module ${name} failed! A get module with this trigger already exists!`);
-            else {
-                client.modules.set(m.name, m);
-                if (m.type === 'load') runModule(m);
-            }
+            let module = require(`../modules/${cmd}`);
+            if (!Array.isArray(module)) module = [module];
+            module.forEach(m => {
+                m.type = m.type ?? 'run';
+                m.__fileName = `../modules/${cmd}`;
+                if (m.type === 'get' && client.modules.find(({ trigger, type }) => type === 'get' && trigger === m.trigger))
+                    console.error(`Loading module ${name} failed! A get module with this trigger already exists!`);
+                else {
+                    client.modules.set(m.name, m);
+                    if (m.type === 'load') runModule(m);
+                    client.run('loader.load', name);
+                }
+            });
         } catch (e) {
             console.error(`Error loading module ${cmd}:`);
             console.error(e);
@@ -64,8 +68,11 @@ module.exports = (client) => {
         if (module.close)
             await module.close(client);
         try {
-            unRequire(module.__fileName || `../modules/${moduleName}`);
+            // Don't unRequire if other modules are using the same module.
+            if (client.modules.filter((m, name) => m.__fileName || `../modules/${name}` === module.__fileName).size <= 1)
+                unRequire(module.__fileName || `../modules/${moduleName}`);
             client.modules.delete(moduleName);
+            client.run('loader.unload', moduleName);
         } catch (e) {
             console.error(`Error un-requiring ${moduleName}\n`, e);
             return 'Error un-requiring';
@@ -105,13 +112,13 @@ module.exports = (client) => {
         if (!override)
             return `The override \`${overrideName}\` doesn't seem to exist. Try again!`;
         console.info(`Unloading override ${overrideName}...`);
-        if (override.close) 
+        if (override.close)
             await override.close(client);
         try {
             unRequire(`../overrides/${overrideName}`);
             client.overrides.delete(overrideName);
         } catch (e) {
-            console.error(`Error un-requiring ${overrideName}\n`,e);
+            console.error(`Error un-requiring ${overrideName}\n`, e);
             return 'Error un-requiring';
         }
         return false;

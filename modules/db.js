@@ -1,6 +1,6 @@
 // todo make this much more modular
-const Josh = require('josh');
-const provider = require('@josh-providers/sqlite');
+const Josh = require('@joshdb/core');
+const provider = require('@joshdb/sqlite');
 
 module.exports = {
     name: 'db',
@@ -49,6 +49,10 @@ module.exports.run = (client) => {
     }); 
     client.db.logins = new Josh({
         name: 'logins',
+        provider,
+    });
+    client.db.timers = new Josh({
+        name: 'timers',
         provider,
     });
 };

@@ -16,7 +16,7 @@ module.exports.run = async (client, message, args, level) => {
             let cmds = client.commands.map(c => c.name);
             for (let i = 0; i < cmds.length; i++) await client.unloadCommand(cmds[i]);
             await client.loadAllCommands();
-            message.reply('Reloaded all commands.');
+            await message.reply('Reloaded all commands.');
         } else {
             let cmd = client.commands.get(args[0]) || client.commands.get(client.aliases.get(args[0]));
             let response = await client.unloadCommand(cmd.name);
@@ -25,14 +25,14 @@ module.exports.run = async (client, message, args, level) => {
             response = client.loadCommand(cmd.name);
             if (response) return message.reply(`Error Loading: ${response}`);
 
-            message.reply(`The command \`${cmd.name}\` has been reloaded`);
+            await message.reply(`The command \`${cmd.name}\` has been reloaded`);
         }
     } else {
         if (!args[0]) {
             let events = client.eventNames();
             for (let i = 0; i < events.length; i++) await client.unloadEvent(events[i]);
             await client.loadAllEvents();
-            message.reply('Reloaded all events.');
+            await message.reply('Reloaded all events.');
         } else {
             let event = args[0];
             let response = await client.unloadEvent(event);
@@ -41,7 +41,7 @@ module.exports.run = async (client, message, args, level) => {
             response = client.loadEvent(event);
             if (response) return message.reply(`Error Loading: ${response}`);
 
-            message.reply(`The event \`${event}\` has been reloaded`);
+            await message.reply(`The event \`${event}\` has been reloaded`);
         }
     }
 };

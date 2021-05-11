@@ -39,7 +39,7 @@ module.exports.run = async (client, message, args, level) => {
                     name: tag,
                     content
                 });
-                message.reply(`Successfully set the tag! You can use it by running \`${message.settings.prefix}${tag}\` or \`${message.settings.prefix}tags ${tag}\``, { allowedMentions: { users: [] } });
+                await message.reply(`Successfully set the tag! You can use it by running \`${message.settings.prefix}${tag}\` or \`${message.settings.prefix}tags ${tag}\``, { allowedMentions: { users: [] } });
             }
         },
         {
@@ -50,7 +50,7 @@ module.exports.run = async (client, message, args, level) => {
                 if (!tag) message.reply('Please specify a tag to delete.');
                 if (!(await client.db.tags.has(`${message.guild.id}-${tag}`))) return message.reply('That tag doesn\'t exist');
                 await client.db.tags.delete(`${message.guild.id}-${tag}`);
-                message.reply('Successfully deleted the tag!');
+                await message.reply('Successfully deleted the tag!');
             }
         },
         {
@@ -64,7 +64,7 @@ module.exports.run = async (client, message, args, level) => {
                 let data = await client.db.tags.get(`${message.guild.id}-${tag}`);
                 if (!data)
                     return message.reply(`I'm sorry no tag found called, ${tag}`, { allowedMentions: { users: [] } });
-                message.channel.send(escapeMarkdown(data.content));
+                await message.channel.send(escapeMarkdown(data.content));
             }
         },
         {
@@ -85,9 +85,9 @@ module.exports.run = async (client, message, args, level) => {
                 let data = await client.db.tags.get(`${message.guild.id}-${tag}`);
                 if (!data)
                     return message.reply(`I'm sorry no tag found called, ${tag}`, { allowedMentions: { users: [] } });
-                message.channel.send(data.content);
+                await message.channel.send(data.content);
             }
         }
     ];
-    client.subCommand(args, level, subCommands);
+    await client.subCommand(args, level, subCommands);
 };

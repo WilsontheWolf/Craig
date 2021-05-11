@@ -16,7 +16,7 @@ module.exports.run = (client) => {
             name = name.join('.');
             console.info(`Loading command ${name}...`);
             const c = require(`../commands/${cmd}`);
-            c.__fileName = `../modules/${cmd}`;
+            c.__fileName = `../commands/${cmd}`;
             client.commands.set(c.name, c);
             c.aliases.forEach(a => client.aliases.set(a, c.name));
         } catch (e) {
@@ -54,7 +54,7 @@ module.exports.run = (client) => {
         try {
             unRequire(command.__fileName || `../commands/${command.name}.js`);
             command.aliases?.forEach(a => {
-                a.delete(a);
+                client.aliases.delete(a);
             });
             client.commands.delete(commandName);
         } catch (e) {
