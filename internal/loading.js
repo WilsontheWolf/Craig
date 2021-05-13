@@ -15,6 +15,12 @@ module.exports = (client) => {
                 }
             }
     };
+    // Internal function to run modules
+    const runModule = async (m, payload = []) => {
+        if (typeof m.check === 'function')
+            if (!(await m.check(client, ...payload))) return;
+        if (typeof m.run === 'function') m.run(client, ...payload);
+    };
 
     client.loadModule = (cmd) => {
         if (!client.modules) client.modules = new Collection();
@@ -23,8 +29,19 @@ module.exports = (client) => {
             if (name.length !== 1) name.pop();
             name = name.join('.');
             console.info(`Loading module ${name}...`);
-            const c = require(`../modules/${cmd}`);
-            client.modules.set(c.name, c);
+            let module = require(`../modules/${cmd}`);
+            if (!Array.isArray(module)) module = [module];
+            module.forEach(m => {
+                m.type = m.type ?? 'run';
+                m.__fileName = `../modules/${cmd}`;
+                if (m.type === 'get' && client.modules.find(({ trigger, type }) => type === 'get' && trigger === m.trigger))
+                    console.error(`Loading module ${name} failed! A get module with this trigger already exists!`);
+                else {
+                    client.modules.set(m.name, m);
+                    if (m.type === 'load') runModule(m);
+                    client.run('loader.load', name);
+                }
+            });
         } catch (e) {
             console.error(`Error loading module ${cmd}:`);
             console.error(e);
@@ -47,12 +64,17 @@ module.exports = (client) => {
         let module = client.modules.get(moduleName);
         if (!module)
             return `The module \`${moduleName}\` doesn't seem to exist. Try again!`;
-        if (module.shutdown) {
-            await module.shutdown(client);
-        }
+        console.info(`Unloading module ${moduleName}...`);
+        if (module.close)
+            await module.close(client);
         try {
-            unRequire(`../modules/${module}`);
+            // Don't unRequire if other modules are using the same module.
+            if (client.modules.filter((m, name) => m.__fileName || `../modules/${name}` === module.__fileName).size <= 1)
+                unRequire(module.__fileName || `../modules/${moduleName}`);
+            client.modules.delete(moduleName);
+            client.run('loader.unload', moduleName);
         } catch (e) {
+            console.error(`Error un-requiring ${moduleName}\n`, e);
             return 'Error un-requiring';
         }
         return false;
@@ -89,30 +111,33 @@ module.exports = (client) => {
         let override = client.overrides.get(overrideName);
         if (!override)
             return `The override \`${overrideName}\` doesn't seem to exist. Try again!`;
-        if (override.shutdown) {
-            await override.shutdown(client);
-        }
+        console.info(`Unloading override ${overrideName}...`);
+        if (override.close)
+            await override.close(client);
         try {
-            unRequire(`../overrides/${override}`);
+            unRequire(`../overrides/${overrideName}`);
+            client.overrides.delete(overrideName);
         } catch (e) {
+            console.error(`Error un-requiring ${overrideName}\n`, e);
             return 'Error un-requiring';
         }
         return false;
     };
 
     client.on('*', (event, ...args) => {
-        client.run(`event.${event}`, args);
+        client.run(`event.${event}`, ...args);
     });
 
-    client.run = async (trigger, payload) => {
-        if (!Array.isArray(payload)) payload = [payload];
+    client.run = async (trigger, ...payload) => {
         const override = client.overrides.get(trigger);
         if (override && typeof override === 'function') payload = await override(client, ...payload);
-        client.modules.filter(m => m && m.trigger === trigger).forEach(async e => {
-            if (typeof e.check === 'function')
-                if (!(await e.check(client, ...payload))) return;
-            if (typeof e.run === 'function') e.run(client, ...payload);
+        client.modules.filter(m => m && m.trigger === trigger && m.type === 'run').forEach(async e => {
+            runModule(e, payload);
         });
+    };
+    client.get = async (trigger, ...payload) => {
+        const module = client.modules.find(m => m && m.trigger === trigger && m.type === 'get');
+        if (typeof module?.run === 'function') return module.run(client, ...payload);
     };
     client.initialize = async () => {
         client.modules = new Collection();

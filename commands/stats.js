@@ -29,10 +29,10 @@ const main = (client, data) => {
 module.exports.slash = {
     supported: true,
     run: async (client, args, data, reply) => {
-        reply(main(client, data));
+        await reply(main(client, data));
     }
 };
 // eslint-disable-next-line no-unused-vars
 module.exports.run = async (client, message, args, level) => {
-    message.channel.send(main(client, message));
+    await message.channel.send(main(client, message));
 };

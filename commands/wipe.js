@@ -19,5 +19,5 @@ module.exports.run = async (client, message, args, level) => {
         Object.keys(await client.db.points.filter(p => p.guild === message.guild.id))
             .forEach(p => client.db.points.delete(p));
         message.reply('Successfully deleted your servers settings!');
-    } else message.reply('Canceled. Your setting have not been deleted.');
+    } else await message.reply('Canceled. Your setting have not been deleted.');
 };

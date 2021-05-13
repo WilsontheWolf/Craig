@@ -1,6 +1,6 @@
 module.exports = {
     name: 'data',
-    trigger: 'load'
+    type: 'load'
 };
 
 module.exports.run = (client) => {
@@ -18,4 +18,9 @@ module.exports.run = (client) => {
         }
         return level;
     };
+};
+
+module.exports.close = (client) => {
+    delete client.getSettings;
+    delete client.getLevel;
 };

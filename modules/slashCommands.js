@@ -17,7 +17,7 @@ module.exports.run = async (client, packet) => {
     if (guild) member = new Discord.GuildMember(client, memberRaw, guild);
     let user = new Discord.User(client, memberRaw.user);
     const url = `https://discord.com/api/v8/interactions/${packet.d.id}/${packet.d.token}/callback`;
-    const reply = async (content, hidden = true, type = 3) => {
+    const reply = async (content, hidden = true, type = 4) => {
         let res;
         if (typeof content === 'string') res = {
             content,
@@ -25,7 +25,7 @@ module.exports.run = async (client, packet) => {
         };
         else if (content instanceof Discord.MessageEmbed) res = {
             embeds: [content],
-            flags: 0 // As of right now hidden messages don't support embeds
+            flags: hidden ? 64 : 0
         };
         else throw new Error('Invalid data type!');
         let request = await fetch(url, {
@@ -52,11 +52,19 @@ module.exports.run = async (client, packet) => {
     if (rawArgs) rawArgs.forEach(({ value, name }) => {
         args.set(name, value);
     });
-    let resData = { author: user, member, guild };
-    resData.level = client.getLevel(resData);
+    let resData = {
+        author: user, 
+        member, 
+        guild, 
+        client
+    };
+    resData.level = await client.getLevel(resData);
+    resData.settings = await client.getSettings(resData);
     try {
         await command.slash.run(client, args, resData, reply);
     } catch (e) {
+        console.error(`${user.tag} had an error running slash command ${name}!`);
+        console.error(e);
         reply(`There was an unexpected error running that command.
 If you get support on this error please provide this info: ${'```'}
 ${e}

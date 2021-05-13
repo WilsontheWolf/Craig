@@ -1,6 +1,6 @@
 module.exports = {
     name: 'fetching',
-    trigger: 'load'
+    type: 'load'
 };
 
 module.exports.run = (client) => {
@@ -185,4 +185,14 @@ ${question}`
             return false;
         }
     };
+};
+
+module.exports.close = (client) => {
+    delete client.fetchUser;
+    delete client.searchUser;
+    delete client.fetchRole;
+    delete client.searchRole;
+    delete client.fetchChannel;
+    delete client.searchChannel;
+    delete client.awaitReply;
 };
