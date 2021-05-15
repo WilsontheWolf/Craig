@@ -8,8 +8,8 @@ const Discord = require('discord.js');
 // eslint-disable-next-line no-unused-vars
 module.exports.run = async (client, packet) => {
     if (!packet || packet.t !== 'INTERACTION_CREATE') return;
-    if (!client.slash) client.slash = [];
-    client.slash.push(packet);
+    // Only run on slash commands
+    if (packet.d.type !== 2) return;
     let { data, member: memberRaw, guild_id: guildID } = packet.d;
     if (!data || !memberRaw || !memberRaw.user) return console.debug('Slash command missing stuff!');
     let guild = client.guilds.cache.get(guildID);
@@ -41,25 +41,24 @@ module.exports.run = async (client, packet) => {
             return '';
         }
         return await request.text();
-
-
     };
     const { name, options: rawArgs } = data;
     let command = client.commands.get(name);
-    if (!command) return reply(`I'm sorry that command doesn't seem to exist :V. Please report this error to https://discord.gg/${await client.db.internal.get('supportInvite')}`);
-    if (!command.slash || !command.slash.supported || !command.slash.run || typeof command.slash.run !== 'function') return reply(`I'm sorry that command doesn't seem to be supported :V. Please report this error to https://discord.gg/${await client.db.internal.get('supportInvite')}`);
+    if (!command || !command.slash || !command.slash.supported || !command.slash.run || typeof command.slash.run !== 'function')
+        return reply(`I'm sorry that command doesn't seem to be supported :V. Please report this error to https://discord.gg/${await client.db.internal.get('supportInvite')}`);
     let args = new Map();
     if (rawArgs) rawArgs.forEach(({ value, name }) => {
         args.set(name, value);
     });
     let resData = {
-        author: user, 
-        member, 
-        guild, 
+        author: user,
+        member,
+        guild,
         client
     };
     resData.level = await client.getLevel(resData);
     resData.settings = await client.getSettings(resData);
+    console.debug(`[DEBUG] ${user.tag} ran ${name}.`);
     try {
         await command.slash.run(client, args, resData, reply);
     } catch (e) {
