@@ -6,7 +6,7 @@ module.exports = {
     level: 9,
     aliases: [],
     category: 'System',
-    description: 'Restore the databases from the backup.',
+    description: '[internal] Restore the databases from the backup.',
     moreHelp: null
 };
 // eslint-disable-next-line no-unused-vars

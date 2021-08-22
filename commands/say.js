@@ -12,11 +12,11 @@ module.exports = {
 
 module.exports.slash = {
     supported: true,
-    run: async (client, args, data, reply) => {
-        reply(args.get('content'), false, 4);
+    run: async (client, i) => {
+        i.reply({content: i.options.get('content').value, allowedMentions: { users: [i.author.id]} });
     }
 };
 // eslint-disable-next-line no-unused-vars
 module.exports.run = async (client, message, args, level) => {
-    message.channel.send(args.join(' '), { allowedMentions: { users: [message.author.id] } });
+    message.channel.send({content: args.join(' '), allowedMentions: { users: [message.author.id] } });
 };

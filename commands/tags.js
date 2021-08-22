@@ -4,7 +4,7 @@ module.exports = {
     guildOnly: false,
     enabled: true,
     level: 0,
-    aliases: ['tag', 'tags'],
+    aliases: ['tag'],
     category: 'Misc',
     description: 'Manage and view tags of your server.',
     moreHelp: `\`tags\` - shows all the tags for the server.
@@ -34,12 +34,13 @@ module.exports.run = async (client, message, args, level) => {
                 if (tag.includes('.')) return message.reply('Due to an issue with the database you can\'t have `.`\'s in the tag name. Sorry for that');
                 content = content.join(' ');
                 if (!content) return message.reply('Please include the content of the tag.');
+                if(content.length > 2000) return message.reply('Please make sure your tag is less than 2000 characters.');
                 await client.db.tags.set(`${message.guild.id}-${tag}`, {
                     guild: message.guild.id,
                     name: tag,
                     content
                 });
-                await message.reply(`Successfully set the tag! You can use it by running \`${message.settings.prefix}${tag}\` or \`${message.settings.prefix}tags ${tag}\``, { allowedMentions: { users: [] } });
+                await message.reply({ content: `Successfully set the tag! You can use it by running \`${message.settings.prefix}${tag}\` or \`${message.settings.prefix}tags ${tag}\``,  allowedMentions: { users: [] } });
             }
         },
         {
@@ -63,7 +64,7 @@ module.exports.run = async (client, message, args, level) => {
                 if (!tag) return message.reply('Please choose a tag to get the content of.');
                 let data = await client.db.tags.get(`${message.guild.id}-${tag}`);
                 if (!data)
-                    return message.reply(`I'm sorry no tag found called, ${tag}`, { allowedMentions: { users: [] } });
+                    return message.reply({ content: `I'm sorry no tag found called, ${tag}`,  allowedMentions: { users: [] } });
                 await message.channel.send(escapeMarkdown(data.content));
             }
         },
@@ -84,7 +85,7 @@ module.exports.run = async (client, message, args, level) => {
                 }
                 let data = await client.db.tags.get(`${message.guild.id}-${tag}`);
                 if (!data)
-                    return message.reply(`I'm sorry no tag found called, ${tag}`, { allowedMentions: { users: [] } });
+                    return message.reply({ content: `I'm sorry no tag found called, ${tag}`,  allowedMentions: { users: [] } });
                 await message.channel.send(data.content);
             }
         }

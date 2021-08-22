@@ -6,7 +6,7 @@ module.exports = {
     level: 9,
     aliases: [],
     category: 'System',
-    description: 'Run JS code.',
+    description: '[internal] Run JS code.',
     moreHelp: null
 };
 const Discord = require('discord.js');
@@ -60,20 +60,29 @@ ${' '.repeat(error.column - 1)}${'^'.repeat(length)}
     embed
         .setTitle(e ? '**Error**' : '**Success**')
         .setColor(e ? 'RED' : 'GREEN')
-        .setDescription(`\`\`\`${response.substr(0, 2042)}\`\`\``);
-    if (length >= 2049) {
-        console.debug(`An eval command executed by ${message.author.username}'s response was too long (${length}/2048) the response was:
+        .setDescription(`\`\`\`${response.substr(0, 4090)}\`\`\``);
+    if (length > 4096) {
+        console.debug(`An eval command executed by ${message.author.username}'s response was too long (${length}/4096) the response was:
 ${response}`);
-        embed.addField('Note:', `The response was too long with a length of \`${length}/2048\` characters. it was logged to the console`);
+        embed.addField('Note:', `The response was too long with a length of \`${length}/4096\` characters. it was logged to the console`);
     }
-    // eslint-disable-next-line no-unused-vars
-    msg = await message.channel.send(embed);
-    // msg.react('💥')
+    await message.channel.send({
+        embeds: [embed],
+        components: [
+            new Discord.MessageActionRow()
+                .addComponents(
+                    new Discord.MessageButton()
+                        .setCustomId(`delete.${message.author.id}`)
+                        .setLabel('Hide Response')
+                        .setStyle('DANGER')
+                        .setEmoji('🗑️')
+                )
+        ],
+    });
 };
 
 module.exports.slash = {
-    // Due to lack of multiline code and potential 
-    // security risks (I don't trust myself) no 
-    // slash eval.
+    // Due to lack of multiline code
+    // no slash eval.
     supported: false,
 };

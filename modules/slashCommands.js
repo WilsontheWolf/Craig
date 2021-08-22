@@ -1,72 +1,34 @@
-// WARNING: This is in early testing. This does not represent the final state of this code
 module.exports = {
     name: 'slashCommand',
-    trigger: 'event.raw'
+    trigger: 'interaction.command'
 };
-const fetch = require('node-fetch');
-const Discord = require('discord.js');
+
 // eslint-disable-next-line no-unused-vars
-module.exports.run = async (client, packet) => {
-    if (!packet || packet.t !== 'INTERACTION_CREATE') return;
-    // Only run on slash commands
-    if (packet.d.type !== 2) return;
-    let { data, member: memberRaw, guild_id: guildID } = packet.d;
-    if (!data || !memberRaw || !memberRaw.user) return console.debug('Slash command missing stuff!');
-    let guild = client.guilds.cache.get(guildID);
-    let member;
-    if (guild) member = new Discord.GuildMember(client, memberRaw, guild);
-    let user = new Discord.User(client, memberRaw.user);
-    const url = `https://discord.com/api/v8/interactions/${packet.d.id}/${packet.d.token}/callback`;
-    const reply = async (content, hidden = true, type = 4) => {
-        let res;
-        if (typeof content === 'string') res = {
-            content,
-            flags: hidden ? 64 : 0
-        };
-        else if (content instanceof Discord.MessageEmbed) res = {
-            embeds: [content],
-            flags: hidden ? 64 : 0
-        };
-        else throw new Error('Invalid data type!');
-        let request = await fetch(url, {
-            method: 'POST',
-            body: JSON.stringify({
-                type,
-                data: res
-            }),
-            headers: { 'Content-Type': 'application/json' }
-        });
-        if (!request.ok) {
-            console.error('Failed to send', request.url, request.status, await request.text());
-            return '';
-        }
-        return await request.text();
-    };
-    const { name, options: rawArgs } = data;
-    let command = client.commands.get(name);
+module.exports.run = async (client, i) => {
+    let command = client.commands.get(i.commandName);
     if (!command || !command.slash || !command.slash.supported || !command.slash.run || typeof command.slash.run !== 'function')
-        return reply(`I'm sorry that command doesn't seem to be supported :V. Please report this error to https://discord.gg/${await client.db.internal.get('supportInvite')}`);
-    let args = new Map();
-    if (rawArgs) rawArgs.forEach(({ value, name }) => {
-        args.set(name, value);
+        return i.reply({ content: `I'm sorry that command doesn't seem to be supported :V. Please report this error to https://discord.gg/${await client.db.internal.get('supportInvite')}`, ephemeral: true });
+    console.debug(`[DEBUG] ${i.user.tag} ran ${i.commandName}.`);
+    if (command.level > i.level) return i.reply({
+        content: `You don't have the permissions to run this command.
+You need to be a ${client.config.perms.find(p => p.level === command.level).name} (${command.level})
+You are a ${client.config.perms.find(p => p.level === i.level).name} (${i.level})`, ephemeral: true
     });
-    let resData = {
-        author: user,
-        member,
-        guild,
-        client
-    };
-    resData.level = await client.getLevel(resData);
-    resData.settings = await client.getSettings(resData);
-    console.debug(`[DEBUG] ${user.tag} ran ${name}.`);
+
     try {
-        await command.slash.run(client, args, resData, reply);
+        await command.slash.run(client, i);
     } catch (e) {
-        console.error(`${user.tag} had an error running slash command ${name}!`);
+        console.error(`${i.user.tag} had an error running slash command ${i.commandName}!`);
         console.error(e);
-        reply(`There was an unexpected error running that command.
+        i.reply({
+            content: `There was an unexpected error running that command.
 If you get support on this error please provide this info: ${'```'}
 ${e}
-${'```'}`);
+${'```'}`, ephemeral: true
+        })
+            .catch(e => {
+                console.error('Error sending slash error message!');
+                console.error(e);
+            });
     }
 };

@@ -19,7 +19,7 @@ module.exports.run = (client) => {
                 return ctx.body = { message: 'Client not ready. Please retry shortly.' };
             }
             try {
-                let get = path.replace(/^\/+|(\/)\/+|\/+$/g, '$1');
+                let get = path.replace(/^\/+|(\/)\/+|\/+$/g, '$1').toLowerCase();
                 if (!get) resp = { message: 'Api is a-ok' };
                 else resp = await client.get(`api.${get}`, ctx);
                 if (!resp) {

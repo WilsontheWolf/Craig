@@ -43,7 +43,7 @@ const log = async (args, type) => {
     log(magenta(makeTimestamp()), content);
 };
 
-module.exports = (debug = process.env.NODE_ENV.toUpperCase() === 'DEVELOPMENT') => {
+module.exports = (debug = process.env.NODE_ENV?.toUpperCase() === 'DEVELOPMENT') => {
     console.log = (...args) => log(args);
     console.error = (...args) => log(args, 'error');
     console.info = (...args) => log(args, 'info');

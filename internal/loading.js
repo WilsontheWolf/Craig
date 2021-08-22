@@ -28,7 +28,7 @@ module.exports = (client) => {
             let name = cmd.split('.');
             if (name.length !== 1) name.pop();
             name = name.join('.');
-            console.info(`Loading module ${name}...`);
+            console.debug(`Loading module ${name}...`);
             let module = require(`../modules/${cmd}`);
             if (!Array.isArray(module)) module = [module];
             module.forEach(m => {
@@ -64,7 +64,7 @@ module.exports = (client) => {
         let module = client.modules.get(moduleName);
         if (!module)
             return `The module \`${moduleName}\` doesn't seem to exist. Try again!`;
-        console.info(`Unloading module ${moduleName}...`);
+        console.debug(`Unloading module ${moduleName}...`);
         if (module.close)
             await module.close(client);
         try {
@@ -86,7 +86,7 @@ module.exports = (client) => {
             let name = cmd.split('.');
             if (name.length !== 1) name.pop();
             name = name.join('.');
-            console.info(`Loading override ${name}...`);
+            console.debug(`Loading override ${name}...`);
             const c = require(`../overrides/${cmd}`);
             client.overrides.set(name, c);
         } catch (e) {
@@ -111,7 +111,7 @@ module.exports = (client) => {
         let override = client.overrides.get(overrideName);
         if (!override)
             return `The override \`${overrideName}\` doesn't seem to exist. Try again!`;
-        console.info(`Unloading override ${overrideName}...`);
+        console.debug(`Unloading override ${overrideName}...`);
         if (override.close)
             await override.close(client);
         try {
@@ -135,7 +135,7 @@ module.exports = (client) => {
             runModule(e, payload);
         });
     };
-    client.get = async (trigger, ...payload) => {
+    client.get = (trigger, ...payload) => {
         const module = client.modules.find(m => m && m.trigger === trigger && m.type === 'get');
         if (typeof module?.run === 'function') return module.run(client, ...payload);
     };

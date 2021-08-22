@@ -14,7 +14,7 @@ module.exports.run = (client) => {
             let name = cmd.split('.');
             if (name.length !== 1) name.pop();
             name = name.join('.');
-            console.info(`Loading command ${name}...`);
+            console.debug(`Loading command ${name}...`);
             const c = require(`../commands/${cmd}`);
             c.__fileName = `../commands/${cmd}`;
             client.commands.set(c.name, c);
@@ -48,7 +48,7 @@ module.exports.run = (client) => {
         }
         if (!command)
             return `The command \`${commandName}\` doesn't seem to exist, nor is it an alias. Try again!`;
-        console.info(`Unloading command ${commandName}...`);
+        console.debug(`Unloading command ${commandName}...`);
         if (command.close) 
             await command.close(client);
         try {

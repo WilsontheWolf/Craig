@@ -6,7 +6,7 @@ module.exports = {
     level: 9,
     aliases: ['refresh'],
     category: 'System',
-    description: 'Reload a command.',
+    description: '[internal] Reload a command.',
     moreHelp: null
 };
 // eslint-disable-next-line no-unused-vars

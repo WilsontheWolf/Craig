@@ -121,7 +121,7 @@ module.exports.run = async (client, message, args, level) => {
             .setTitle(`${message.guild.name} settings:`)
             .setColor('GOLD')
             .addFields(set);
-        return message.channel.send(embed);
+        return message.channel.send({embeds: [embed]});
     }
     let subCommand = args.shift();
     if (subCommand == 'view') {
@@ -139,7 +139,7 @@ module.exports.run = async (client, message, args, level) => {
             .setDescription(desc)
             .addField('Current Value:', value)
             .setColor('GOLD');
-        return message.channel.send(embed);
+        return message.channel.send({ embeds: [embed] });
     }
     if (subCommand == 'edit') {
         let setting = args.shift();
@@ -154,7 +154,7 @@ module.exports.run = async (client, message, args, level) => {
         let newValue = await setValue(type, input, value);
         if (newValue === undefined) return message.reply(`invalid new value for ${name}!`);
         await client.db.settings.set(`${message.guild.id}.${setting}`, newValue);
-        return message.channel.send(`Successfully set new value for ${name} to ${parseValue(newValue, true)}.`, { allowedMentions: { users: [] } });
+        return message.channel.send({ content: `Successfully set new value for ${name} to ${parseValue(newValue, true)}.`, allowedMentions: { users: [] } });
     }
     if (subCommand == 'reset') {
         let setting = args.join(' ');

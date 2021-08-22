@@ -16,7 +16,7 @@ const main = async () => {
 module.exports.slash = {
     supported: true,
     // eslint-disable-next-line no-unused-vars
-    run: async (client, args, data, reply) => {
+    run: async (client, i) => {
         main();
     }
 };

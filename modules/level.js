@@ -1,6 +1,6 @@
 module.exports = {
     name: 'level',
-    trigger: 'event.message'
+    trigger: 'event.messageCreate'
 };
 const cooldowns = new Set();
 // eslint-disable-next-line no-unused-vars
@@ -20,7 +20,7 @@ module.exports.run = async (client, message) => {
     points += amount;
     const curLevel = Math.floor(0.1 * Math.sqrt(points));
     if (level < curLevel) {
-        message.reply(`You've leveled up to level **${curLevel}**! 🎉`, { allowedMentions: { users: [] } });
+        message.reply({ content: `You've leveled up to level **${curLevel}**! 🎉`, allowedMentions: { users: [] } });
     }
     client.db.points.set(`${key}.level`, curLevel);
     client.db.points.set(`${key}.points`, points);

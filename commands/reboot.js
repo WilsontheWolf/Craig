@@ -6,7 +6,7 @@ module.exports = {
     level: 9,
     aliases: ['restart', 'shutdown'],
     category: 'System',
-    description: 'Shut down the bot.',
+    description: '[internal] Shut down the bot.',
     moreHelp: null
 };
 // eslint-disable-next-line no-unused-vars

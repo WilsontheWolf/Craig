@@ -36,7 +36,7 @@ module.exports = [
         name: 'Server Owner',
         check: (message) => {
             try {
-                if (message.guild.ownerID === message.author.id) return true;
+                if (message.guild.ownerID === (message.author?.id || message.user?.id)) return true;
                 return false;
             } catch (e) {
                 return false;
@@ -48,7 +48,7 @@ module.exports = [
         name: 'Bot Support',
         check: async (message) => {
             try {
-                if (message.settings.support && (await message.client.internal.get('support').includes(message.author.id))) return true;
+                if (message.settings.support && (await message.client.internal.get('support').includes(message.author?.id || message.user?.id))) return true;
                 return false;
             } catch (e) {
                 return false;
@@ -59,14 +59,14 @@ module.exports = [
         level: 9,
         name: 'Bot Co-Owner',
         check: async (message) => {
-            return message.client.config.coOwnersIDs.includes(message.author.id);
+            return message.client.config.coOwnersIDs.includes(message.author?.id || message.user?.id);
         }
     },
     {
         level: 10,
         name: 'Bot Owner',
         check: async (message) => {
-            return message.client.config.ownerID == message.author.id;
+            return message.client.config.ownerID == (message.author?.id || message.user?.id);
         }
     },
 ];
